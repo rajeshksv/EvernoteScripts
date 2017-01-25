@@ -1,0 +1,49 @@
+// ==UserScript==
+// Tampermonkey script for Evernote WebClient Keyboard shortcuts. To see all shortcuts press Ctrl+Alt+? in evernote editor
+// @name         Evernote Web Shortcuts
+// @namespace    http://github.com/rajeshksv/
+// @version      0.1
+// @description  Adds shortcuts to create links, insert code snippet, strikethrough etc
+// @author       Rajesh KSV (With Credits to Jason Stillwell)
+// @match        https://www.evernote.com/*
+// @grant unsafeWindow
+// ==/UserScript==
+
+function TM_Retry() {
+    window.setTimeout(TM_Wait,100);
+}
+
+function TM_Wait() {
+
+    if(typeof unsafeWindow.jQuery == 'undefined') {      
+        TM_Retry();
+        return;
+    }
+    
+    
+    var $ = unsafeWindow.jQuery;
+    var ifr = $("iframe[id^=en-common-editor-iframe]");
+    
+    if(ifr.size() == 0) {
+        TM_Retry();
+        return;
+    }
+    
+    ifr.contents().keydown(function(evt){
+        if (evt.keyCode==75 && evt.ctrlKey && evt.altKey){
+            evt.preventDefault();
+            $("#gwt-debug-FormattingBar-linkButton")[0].click();
+        } else if (evt.keyCode==189 && evt.ctrlKey && evt.altKey){
+            evt.preventDefault();
+            $("#gwt-debug-FormattingBar-strikeButton")[0].click();
+        } else if (evt.keyCode==67 && evt.ctrlKey && evt.altKey){
+            evt.preventDefault();
+            $("#gwt-debug-FormattingBar-codeBlockButton")[0].click();
+        } else if (evt.keyCode==191 && evt.ctrlKey && evt.altKey){
+            evt.preventDefault();
+            alert("Help Menu: Keyboard Shortcuts \n\nInsert Link - Ctrl + Alt + K \nStrikeThrough - Ctrl + Alt + - \nCode Snippet - Ctrl + Alt + C\n");
+        }
+    });
+}
+
+TM_Wait();
