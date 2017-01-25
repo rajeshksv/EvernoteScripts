@@ -1,2 +1,2 @@
 # EvernoteScripts
-Scripts for Evernote WebClient
+TamperMonkey Scripts for Evernote WebClient
