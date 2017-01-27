@@ -1,10 +1,10 @@
 // ==UserScript==
-// Tampermonkey script for Evernote WebClient Keyboard shortcuts. To see all shortcuts press Ctrl+Alt+? in evernote editor
+// Tampermonkey script for Evernote WebClient Keyboard shortcuts. To see shortcuts press Ctrl+Alt+? in evernote editor
 // @name         Evernote Web Shortcuts
 // @namespace    http://github.com/rajeshksv/
 // @version      0.1
 // @description  Adds shortcuts to create links, insert code snippet, strikethrough etc
-// @author       Rajesh KSV (With Credits to Jason Stillwell)
+// @author       Rajesh KSV (Also Credits to Jason Stillwell)
 // @match        https://www.evernote.com/*
 // @grant unsafeWindow
 // ==/UserScript==
@@ -13,37 +13,71 @@ function TM_Retry() {
     window.setTimeout(TM_Wait,100);
 }
 
-function TM_Wait() {
+function checkGlobalEvents(evt){
+    if (evt.keyCode in GLOBAL_KEY_BINDINGS && evt.ctrlKey && evt.altKey){
+          evt.preventDefault();
+          $(GLOBAL_KEY_BINDINGS[evt.keyCode])[0].click();
+    } else if (evt.keyCode==191 && evt.ctrlKey && evt.altKey){
+          evt.preventDefault();
+          displayHelp();
+    }
+}
 
+function displayHelp(){
+    alert("Help Menu: Keyboard Shortcuts \n\n" +
+                  "Editor Actions \n" +
+                  "-------------- \n" + 
+                  "Insert Link - Ctrl + Alt + K \n" +
+                  "StrikeThrough - Ctrl + Alt + - \n" +
+                  "Code Snippet - Ctrl + Alt + C\n" +
+                  "Check Box - Ctrl + Alt + T\n\n" +
+                  "Navigation Actions \n" +
+                  "------------------ \n" +
+                  "Search - Ctrl + Alt + F \n" +
+                  "Shortcuts - Ctrl + Alt + 1 \n" +
+                  "Notes - Ctrl + Alt + 2     \n" +
+                  "Notebooks - Ctrl + Alt + 3 \n" +
+                  "Tags - Ctrl + Alt + 4      \n");
+}
+
+function TM_Wait() {
     if(typeof unsafeWindow.jQuery == 'undefined') {      
         TM_Retry();
         return;
     }
     
+    $(document).keydown(function(evt){
+       checkGlobalEvents(evt);
+    });
     
-    var $ = unsafeWindow.jQuery;
     var ifr = $("iframe[id^=en-common-editor-iframe]");
-    
-    if(ifr.size() == 0) {
+    if(ifr.size() === 0) {
         TM_Retry();
         return;
     }
     
     ifr.contents().keydown(function(evt){
-        if (evt.keyCode==75 && evt.ctrlKey && evt.altKey){
+        if (evt.keyCode in EDITOR_KEY_BINDINGS && evt.ctrlKey && evt.altKey){
             evt.preventDefault();
-            $("#gwt-debug-FormattingBar-linkButton")[0].click();
-        } else if (evt.keyCode==189 && evt.ctrlKey && evt.altKey){
-            evt.preventDefault();
-            $("#gwt-debug-FormattingBar-strikeButton")[0].click();
-        } else if (evt.keyCode==67 && evt.ctrlKey && evt.altKey){
-            evt.preventDefault();
-            $("#gwt-debug-FormattingBar-codeBlockButton")[0].click();
-        } else if (evt.keyCode==191 && evt.ctrlKey && evt.altKey){
-            evt.preventDefault();
-            alert("Help Menu: Keyboard Shortcuts \n\nInsert Link - Ctrl + Alt + K \nStrikeThrough - Ctrl + Alt + - \nCode Snippet - Ctrl + Alt + C\n");
+            $(EDITOR_KEY_BINDINGS[evt.keyCode])[0].click();
+        } else {
+            checkGlobalEvents(evt);
         }
     });
 }
+
+var $ = unsafeWindow.jQuery;
+var EDITOR_KEY_BINDINGS = {75:'#gwt-debug-FormattingBar-linkButton',
+                   189: '#gwt-debug-FormattingBar-strikeButton', 
+                   67:'#gwt-debug-FormattingBar-codeBlockButton', 
+                   84:'#gwt-debug-FormattingBar-checkboxButton',
+                   85:'#gwt-debug-FormattingBar-bulletButton',
+                   79:'#gwt-debug-FormattingBar-listButton'};
+
+var GLOBAL_KEY_BINDINGS = {70:'#gwt-debug-Sidebar-searchButton-container', 
+                           49:'#gwt-debug-Sidebar-shortcutsButton-container',
+                           50:'#gwt-debug-Sidebar-notesButton-container',
+                           51: '#gwt-debug-Sidebar-notebooksButton-container',
+                           52: '#gwt-debug-Sidebar-tagsButton-container'};
 
 TM_Wait();
