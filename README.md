@@ -1,5 +1,5 @@
 # EvernoteScripts
-In Linux, Evernote for Web is good but well short of being the best. With JS modifications, most of the native app functionality can be added to Web Client. This project attempts to do that (IN PROGRESS). Since these are tampermonkey scripts, they work in Google Chrome on all OS)
+In Linux, Evernote for Web is good but well short of being the best. With JS modifications, most of the native app functionality can be added to Web Client. This project attempts to do that (IN PROGRESS). Since these are tampermonkey scripts, they work in Google Chrome on all OS
 
 ## Keyboard Shortcuts
 
