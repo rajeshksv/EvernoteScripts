@@ -1,0 +1,17 @@
+// ==UserScript==
+// @name        Evernote Skip Screens
+// @namespace   http://github.com/rajeshksv/
+// @version      0.1
+// @description  Avoids the evernote outbound page 
+// @author       Rajesh KSV
+// @include     https://www.evernote.com/OutboundRedirect.action*
+// @grant        none
+// @run-at       document-start
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    var urlParams = new URLSearchParams(window.location.search);
+    window.location.href = urlParams.get('dest');
+})();
