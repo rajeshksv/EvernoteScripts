@@ -1,5 +1,5 @@
 # EvernoteScripts
-TamperMonkey Scripts for Evernote WebClient to work like Native Client
+In Linux, Evernote for Web is good but well short of being the best. With JS modifications, most of the native app functionality can be added to Web Client. This project attempts to do that (IN PROGRESS)
 
 ## Keyboard Shortcuts
 
