@@ -1,5 +1,5 @@
 # EvernoteScripts
-TamperMonkey Scripts for Evernote WebClient
+TamperMonkey Scripts for Evernote WebClient to work like Native Client
 
 ## Keyboard Shortcuts
 
@@ -25,3 +25,7 @@ TamperMonkey Scripts for Evernote WebClient
 | Tags | Ctrl+Shift+4 |
 
 Will add more.. 
+
+### Pipeline
+
+* Navigation between screens just like Native Client - using Escape, Tab keys
